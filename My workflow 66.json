@@ -1,0 +1,85 @@
+{
+  "name": "My workflow 66",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "=GET",
+        "path": "syntaxSquad_index",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "10e57cf5-1138-447b-8ce6-bc6a1691e4c5",
+      "name": "Webhook2",
+      "webhookId": "e42ea3c5-c1a5-47b6-9502-fdd8621ab9b0"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"pt-br\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Painel de Simulação ARDA</title>\n    \n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap\" rel=\"stylesheet\">\n    \n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css\">\n\n    <style>\n        /* --- CSS: Configuração Base e Fundo --- */\n        :root {\n            --primary-glow: #00aaff;\n            --recommended-glow: #00ffaa;\n            --background-start: #0a1027;\n            --background-end: #030613;\n            --font-color: #e0e0e0;\n            --card-bg-color: rgba(30, 40, 70, 0.25);\n            --card-border-color: rgba(255, 255, 255, 0.2);\n            --input-bg-color: rgba(0, 0, 0, 0.2);\n            --error-color: #ff6b6b;\n        }\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n        body {\n            font-family: 'Inter', sans-serif;\n            color: var(--font-color);\n            background: linear-gradient(135deg, var(--background-start), var(--background-end));\n            background-attachment: fixed;\n            min-height: 100vh;\n            display: flex;\n            flex-direction: column;\n            align-items: center;\n            padding: 2rem;\n        }\n        header { text-align: center; margin-bottom: 2rem; animation: fadeInDown 1s ease-out; }\n        h1 { font-size: 2.5rem; font-weight: 700; }\n        header p { font-size: 1.2rem; opacity: 0.8; }\n        main { width: 100%; max-width: 900px; }\n        \n        /* --- CSS: Efeito Glassmorphism e Estilo dos Cards --- */\n        .glass-card {\n            background: var(--card-bg-color);\n            backdrop-filter: blur(12px);\n            -webkit-backdrop-filter: blur(12px);\n            border: 1px solid var(--card-border-color);\n            border-radius: 16px;\n            padding: 2rem;\n            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);\n        }\n        \n        /* --- CSS: Seção de Simulação (Entrada) --- */\n        #simulation-section h2 { text-align: center; margin-bottom: 1.5rem; font-weight: 500; }\n        .form-group { margin-bottom: 1.5rem; }\n        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; opacity: 0.9; }\n        .form-group input {\n            width: 100%;\n            padding: 0.8rem 1rem;\n            border-radius: 8px;\n            border: 1px solid var(--card-border-color);\n            background: var(--input-bg-color);\n            color: var(--font-color);\n            font-family: 'Inter', sans-serif;\n            font-size: 1rem;\n            transition: border-color 0.3s, box-shadow 0.3s;\n        }\n        .form-group input:focus {\n            outline: none;\n            border-color: var(--primary-glow);\n            box-shadow: 0 0 10px rgba(0, 170, 255, 0.5);\n        }\n        input[type=\"datetime-local\"]::-webkit-calendar-picker-indicator { filter: invert(0.8); cursor: pointer; }\n        #analyze-button {\n            width: 100%;\n            padding: 1rem;\n            border: none;\n            border-radius: 8px;\n            background-color: var(--primary-glow);\n            color: #030613;\n            font-size: 1.1rem;\n            font-weight: 700;\n            cursor: pointer;\n            transition: transform 0.2s ease, box-shadow 0.2s ease;\n        }\n        #analyze-button:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--primary-glow); }\n        \n        /* --- CSS: Seção de Carregamento (Loader) --- */\n        #loading-section {\n            display: none;\n            flex-direction: column;\n            align-items: center;\n            justify-content: center;\n            text-align: center;\n            padding: 4rem 0;\n        }\n        .spinner {\n            width: 50px;\n            height: 50px;\n            border: 5px solid var(--card-border-color);\n            border-top: 5px solid var(--primary-glow);\n            border-radius: 50%;\n            animation: spin 1s linear infinite;\n            margin-bottom: 1rem;\n        }\n        #loading-section p { font-size: 1.1rem; opacity: 0.9; }\n        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }\n        \n        /* --- CSS: Seção de Resultados (Saída) --- */\n        #results-section { display: none; }\n        .results-grid { display: grid; gap: 1.5rem; margin-top: 1.5rem; }\n        .summary-card h3, .action-plan-card h3 {\n            margin-bottom: 1rem;\n            font-weight: 700;\n            display: flex;\n            align-items: center;\n            gap: 0.75rem;\n        }\n        .summary-card h3 {\n            color: var(--primary-glow);\n        }\n        .action-plan-card h3 {\n            color: var(--recommended-glow);\n        }\n        .result-details { list-style: none; padding: 0; }\n        .result-details li { margin-bottom: 0.75rem; display: flex; }\n        .result-details strong { display: inline-block; width: 150px; opacity: 0.8; flex-shrink: 0; }\n        .status-badge { padding: 0.25rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 500; text-transform: capitalize; }\n        .status-agendado { background-color: #29b6f6; color: #000; }\n        .status-aguardando { background-color: #ffa726; color: #000; }\n        .status-em_operacao { background-color: #66bb6a; color: #000; }\n        .status-concluido { background-color: #ab47bc; color: #fff; }\n        .status-cancelado { background-color: #ef5350; color: #fff; }\n        .error-card { border-left: 5px solid var(--error-color); display: flex; align-items: center; gap: 1rem; }\n        .error-card i { font-size: 1.5rem; color: var(--error-color); }\n\n        /* --- CSS: Animações --- */\n        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }\n        .fade-in-slide-up { animation: fadeInSlideUp 0.8s ease-out forwards; opacity: 0; }\n        @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }\n        \n        /* --- CSS: Responsividade --- */\n        @media (max-width: 768px) {\n            body { padding: 1rem; }\n            h1 { font-size: 2rem; }\n            header p { font-size: 1rem; }\n            .glass-card { padding: 1.5rem; }\n        }\n        @media (min-width: 768px) {\n            .results-grid { grid-template-columns: 1fr; } /* Alterado para 1 coluna para melhor visualização do resumo */\n        }\n    </style>\n</head>\n<body>\n\n    <header>\n        <h1>Painel de Simulação ARDA</h1>\n        <p>Agente de Resposta a Disrupções de Atracação</p>\n    </header>\n\n    <main>\n        <!-- Seção 1: Formulário de Entrada -->\n        <section id=\"simulation-section\">\n            <div class=\"glass-card\">\n                <h2>Simular Disrupção de Atracação</h2>\n                <form id=\"simulation-form\">\n                    <div class=\"form-group\">\n                        <label for=\"ship-id\">Identificador do Navio</label>\n                        <input type=\"text\" id=\"ship-id\" name=\"ship-id\" placeholder=\"Ex: MSC-GIGANTON-007\" required>\n                    </div>\n                    <div class=\"form-group\">\n                        <label for=\"new-eta\">Novo ETA do Navio</label>\n                        <input type=\"datetime-local\" id=\"new-eta\" name=\"new-eta\" required>\n                    </div>\n                    <button type=\"submit\" id=\"analyze-button\">Analisar Impacto</button>\n                </form>\n            </div>\n        </section>\n\n        <!-- Seção 2: Indicador de Carregamento -->\n        <section id=\"loading-section\">\n            <div class=\"spinner\"></div>\n            <p>Analisando cenários e calculando o impacto na cadeia logística...</p>\n        </section>\n\n        <!-- Seção 3: Exibição dos Resultados -->\n        <section id=\"results-section\">\n            <div class=\"results-grid\" id=\"results-container\">\n                <!-- Os resultados da API do n8n serão inseridos aqui dinamicamente -->\n            </div>\n        </section>\n    </main>\n\n    <script>\n    // --- JAVASCRIPT: Lógica da Simulação ---\n\n    // 1. Seleção dos Elementos do DOM\n    const simulationSection = document.getElementById('simulation-section');\n    const loadingSection = document.getElementById('loading-section');\n    const resultsSection = document.getElementById('results-section');\n    const simulationForm = document.getElementById('simulation-form');\n    const resultsContainer = document.getElementById('results-container');\n    const shipIdInput = document.getElementById('ship-id');\n    const newEtaInput = document.getElementById('new-eta');\n\n    // 2. Endpoint da API (Webhook do n8n)\n    const WEBHOOK_URL = 'https://n8n.hackathon.souamigu.org.br/webhook/syntasquad';\n\n    // 3. Adiciona o Event Listener ao formulário\n    simulationForm.addEventListener('submit', async (event) => {\n        event.preventDefault(); // Previne o recarregamento da página\n        await startSimulation();\n    });\n\n    // 4. Função principal para iniciar a simulação e chamar a API do n8n\n    async function startSimulation() {\n        resultsContainer.innerHTML = '';\n        resultsSection.style.display = 'none';\n        simulationSection.style.display = 'none';\n        loadingSection.style.display = 'flex';\n\n        const shipId = shipIdInput.value;\n        const newEtaValue = newEtaInput.value;\n        const newEtaUTC = newEtaValue ? new Date(newEtaValue).toISOString() : '';\n\n        const requestBody = {\n            identificadorNavio: shipId,\n            novoETA: newEtaUTC\n        };\n\n        try {\n            const response = await fetch(WEBHOOK_URL, {\n                method: 'POST',\n                headers: {\n                    'Content-Type': 'application/json',\n                },\n                body: JSON.stringify(requestBody)\n            });\n\n            if (!response.ok) {\n                throw new Error(`Erro na rede: ${response.statusText}`);\n            }\n            \n            const data = await response.json();\n            displayResults(data);\n\n        } catch (error) {\n            console.error(\"Falha ao buscar dados do webhook:\", error);\n            displayError(\"Não foi possível conectar ao serviço de análise. Por favor, tente novamente mais tarde.\");\n        } finally {\n            loadingSection.style.display = 'none';\n            resultsSection.style.display = 'block';\n        }\n    }\n\n    // 5. Função para criar e exibir os resultados no DOM com a nova estrutura da API\n    function displayResults(data) {\n        resultsContainer.innerHTML = ''; \n\n        // Valida a nova estrutura de dados da API\n        if (!data || !data.analysis_summary || !data.action_plans || !Array.isArray(data.action_plans) || data.action_plans.length === 0) {\n            displayError(\"A resposta da análise é inválida ou não contém um plano de ação.\");\n            return;\n        }\n\n        // --- Card de Resumo da Análise ---\n        const summary = data.analysis_summary;\n        const summaryCard = document.createElement('div');\n        summaryCard.className = 'glass-card summary-card fade-in-slide-up';\n        \n        const summaryTitle = document.createElement('h3');\n        summaryTitle.innerHTML = `<i class=\"fa-solid fa-magnifying-glass-chart\"></i> Resumo da Análise de Conflito`;\n        summaryCard.appendChild(summaryTitle);\n\n        const summaryDescription = document.createElement('p');\n        summaryDescription.style.marginTop = '1rem';\n        summaryDescription.textContent = summary.conflict_description;\n        summaryCard.appendChild(summaryDescription);\n\n        resultsContainer.appendChild(summaryCard);\n\n        // --- Cards para cada Plano de Ação ---\n        data.action_plans.forEach((plan, index) => {\n            const actionCard = document.createElement('div');\n            actionCard.className = 'glass-card action-plan-card fade-in-slide-up';\n            actionCard.style.animationDelay = `${((index + 1) * 0.2)}s`;\n\n            const actionTitle = document.createElement('h3');\n            const shipName = shipIdInput.value || 'Navio Analisado';\n            actionTitle.innerHTML = `<i class=\"fa-solid fa-compass-drafting\"></i> Plano de Ação #${index + 1} para ${shipName}`;\n            actionCard.appendChild(actionTitle);\n            \n            const detailsList = document.createElement('ul');\n            detailsList.className = 'result-details';\n            \n            const createDetailItem = (label, value) => {\n                const li = document.createElement('li');\n                const strong = document.createElement('strong');\n                strong.textContent = label;\n                const span = document.createElement('span');\n                span.textContent = value;\n                li.appendChild(strong);\n                li.appendChild(span);\n                return li;\n            };\n\n            const formatDt = (dateString) => {\n                if (!dateString) return 'N/A';\n                return new Date(dateString).toLocaleString('pt-BR', { \n                    day: '2-digit', month: '2-digit', year: 'numeric',\n                    hour: '2-digit', minute: '2-digit'\n                });\n            };\n\n            detailsList.appendChild(createDetailItem('Berço Recomendado:', plan.recommended_berth));\n            detailsList.appendChild(createDetailItem('Novo ETB:', formatDt(plan.new_etb)));\n            detailsList.appendChild(createDetailItem('Novo ETD:', formatDt(plan.new_etd)));\n            \n            actionCard.appendChild(detailsList);\n\n            const justificationP = document.createElement('p');\n            justificationP.style.marginTop = '1rem';\n            justificationP.innerHTML = `<strong>Justificativa:</strong> `;\n            justificationP.appendChild(document.createTextNode(plan.justification));\n            actionCard.appendChild(justificationP);\n            \n            resultsContainer.appendChild(actionCard);\n        });\n    }\n\n    // 6. Função para exibir uma mensagem de erro no DOM\n    function displayError(message) {\n        resultsContainer.innerHTML = '';\n        const errorCard = document.createElement('div');\n        errorCard.className = 'glass-card error-card fade-in-slide-up';\n        errorCard.innerHTML = `<i class=\"fa-solid fa-circle-exclamation\"></i>\n                               <p><strong>Ocorreu um Erro:</strong> ${message}</p>`;\n        resultsContainer.appendChild(errorCard);\n    }\n    </script>\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "bfbdaf50-47cb-4c11-a62f-edf6b1a9f237",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "d26e991f-236a-433e-9816-fa090a65dc5a",
+      "name": "Respond to Webhook2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook2": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c69c4247-3c11-446e-992a-9bfcf6944335",
+  "meta": {
+    "instanceId": "21b80bbe30a7f15da69548d8c5b1a235d4d21f49c50c6d7cd7bab88b61c1e138"
+  },
+  "id": "9Et1ti4CLUhfWnZX",
+  "tags": []
+}
